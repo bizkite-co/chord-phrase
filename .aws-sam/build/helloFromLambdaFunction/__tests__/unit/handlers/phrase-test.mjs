@@ -1,12 +1,12 @@
 // Import helloFromLambdaHandler function from hello-from-lambda.mjs
-import { helloFromLambdaHandler } from '../../../src/handlers/hello-from-lambda.mjs';
+import { getPhrase } from '../../../src/handlers/phrase.mjs';
 
 // This includes all tests for helloFromLambdaHandler()
-describe('Test for hello-from-lambda', function () {
+describe('Test for getPhrase', function () {
     // This test invokes helloFromLambdaHandler() and compare the result 
     it('Verifies successful response', async () => {
         // Invoke helloFromLambdaHandler()
-        const result = await helloFromLambdaHandler();
+        const result = await getPhrase();
         /* 
             The expected result should match the return from your Lambda function.
             e.g. 
@@ -15,6 +15,6 @@ describe('Test for hello-from-lambda', function () {
         */
         const expectedResult = 'Hello from Lambda!';
         // Compare the result with the expected result
-        expect(result).toEqual(expectedResult);
+        expect(result.testMessage).toEqual(expectedResult);
     });
 });
