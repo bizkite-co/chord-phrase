@@ -1,2 +1,3 @@
 GET https://r2swydpx7syeiycnrnny67bxii0myurm.lambda-url.us-east-1.on.aws/
-?phrase=This is a test
+?phrase=The quick brown fox jumps over the lazy dog
+&ascii=true

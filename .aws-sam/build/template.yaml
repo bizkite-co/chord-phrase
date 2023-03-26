@@ -3,9 +3,10 @@ Description: chord-phrase
 Transform:
 - AWS::Serverless-2016-10-31
 Resources:
-  helloFromLambdaFunction:
+  chordPhrase:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: chord-phrase
       Handler: src/handlers/phrase.getPhrase
       Runtime: nodejs18.x
       Architectures:
@@ -15,6 +16,22 @@ Resources:
       Description: A Lambda function that returns a static string.
       Policies:
       - AWSLambdaBasicExecutionRole
-      CodeUri: helloFromLambdaFunction
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowMethods:
+          - POST
+          - GET
+          AllowOrigins:
+          - https://handex.io
+          - http://localhost
+      CodeUri: chordPhrase
     Metadata:
-      SamResourceId: helloFromLambdaFunction
+      SamResourceId: chordPhrase
+Outputs:
+  lambdaUrl:
+    Description: URL for the Lambda function
+    Value:
+      Fn::GetAtt:
+      - chordPhraseUrl
+      - FunctionUrl

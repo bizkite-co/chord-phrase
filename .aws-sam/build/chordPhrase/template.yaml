@@ -19,9 +19,10 @@ Resources:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: hello-from-lambda.js
-  helloFromLambdaFunction:
+  chordPhrase:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: chord-phrase
       Handler: src/handlers/phrase.getPhrase
       Runtime: nodejs18.x
       Architectures:
@@ -32,3 +33,17 @@ Resources:
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowMethods:
+          - POST
+          - GET
+          AllowOrigins:
+          - https://handex.io
+          - http://localhost
+Outputs:
+  lambdaUrl:
+    Description: URL for the Lambda function
+    Value: !GetAtt chordPhraseUrl.FunctionUrl
+    

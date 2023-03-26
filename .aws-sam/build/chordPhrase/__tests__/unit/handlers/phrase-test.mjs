@@ -6,7 +6,17 @@ describe('Test for getPhrase', function () {
     // This test invokes helloFromLambdaHandler() and compare the result 
     it('Verifies successful response', async () => {
         // Invoke helloFromLambdaHandler()
-        const result = await getPhrase();
+        const data = {
+            "requestContext": {
+                "http": {
+                    "method": "POST"
+                }
+            },
+            "body": "Hello World!"
+        }
+
+
+        const result = await getPhrase(data);
         /* 
             The expected result should match the return from your Lambda function.
             e.g. 
@@ -17,4 +27,23 @@ describe('Test for getPhrase', function () {
         // Compare the result with the expected result
         expect(result.testMessage).toEqual(expectedResult);
     });
+    // Test using the GET method
+    it('Verifies successful response using GET', async () => {
+        // Invoke helloFromLambdaHandler()
+        const data = {
+            "requestContext": {
+                "http": {
+                    "method": "GET"
+                }
+            },
+            "rawQueryString": "Hello World!"
+        }
+        const result = await getPhrase(data);
+        console.log("Result:", result);
+        const expectedResult = 'Hello from Lambda!';
+
+        // Compare the result with the expected result
+        expect(result.testMessage).toEqual(expectedResult);
+    });
+
 });

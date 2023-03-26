@@ -27,24 +27,20 @@ export const getPhrase = async (event) => {
     console.log("EVENT:", event)
     let requestData = eventToRequestData(event);
     console.log("Request data:", requestData);
-    let parsePhrase = requestData;
+    let parsePhrase = requestData.phrase.toString().replaceAll("%20", " ");
     if(!parsePhrase){
         return `Please provide a text string to be converted into a chord phrase.\nRequest content: "${JSON.stringify(event)}"`
     }
-    console.log(`Running handler on string: "${parsePhrase}"`);
+    console.log(`Running handler on string: "${JSON.stringify(parsePhrase)}"`);
     // event.status = ["Adding results"];
     const resultPhrase = stringToChordPhrase(parsePhrase);
     const response = {
         statusCode: 200,
-        body: JSON.stringify(resultPhrase),
+        body: `t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${parsePhrase}\n\n${resultPhrase}`,
         testMessage: "Hello from Lambda!"
     }
-
-
-
-
     // All log statements are written to CloudWatch
-    console.info(`${response}`);
+    console.info(`RESPONSE: ${JSON.stringify(response)}`);
     
     return response;
 }
@@ -52,6 +48,7 @@ export const getPhrase = async (event) => {
 const eventToRequestData = event => {
   var requestData = {};
   //Validate and parse event
+  console.log("Processing event:", event);
   if (event && event.requestContext.http.method === 'OPTIONS') {
     return processResponse(IS_CORS);
   }
@@ -61,7 +58,7 @@ const eventToRequestData = event => {
       console.error("MISSING EVENT BODY:", event)
       return processResponse(IS_CORS, `Handler event body not found.`, 400);
     }
-    requestData = JSON.parse(event.body);
+    requestData = event.body;
   }
   if (event && event.requestContext.http.method === 'GET') {
     console.log("Parsing rawQuerystring", event.rawQueryString);
@@ -76,14 +73,17 @@ const eventToRequestData = event => {
 
 function stringToChordPhrase(inString){
     let phrase = [];
-    Array.from(inString).forEach((c)=>{
-        // console.log("c:", c);
+    console.log("stringToChordPhrase:", inString);
+    const chordArray = Array.from(inString);
+    console.log("chordArray:", chordArray);
+    chordArray.forEach((c)=>{
+        console.log("c:", c);
         let chordChar = c.replace(' ', 'Spacebar').replace(/([\.\\\(\)\{\}\[\]\?])/,"\\$1");
-        // console.log("chordChar:", chordChar);
+        console.log("chordChar:", chordChar);
         let matchPhrase = `(^${chordChar}|and ${chordChar})`;
-        // console.log("matchPhrase:", matchPhrase);
+        console.log("matchPhrase:", matchPhrase);
         let chordPhrase = chords.find(chord => chord.report.match(matchPhrase));
-        // console.log("chordPhrase:", JSON.stringify(chordPhrase));
+        console.log("chordPhrase:", JSON.stringify(chordPhrase));
         phrase.push(`${chordChar.slice(0,5)}\t${chordPhrase.strokes}`);
     })
     return phrase.join('\n');
