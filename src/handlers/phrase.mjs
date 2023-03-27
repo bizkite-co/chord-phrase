@@ -34,7 +34,7 @@ export const getPhrase = async (event) => {
             message: `Please provide a phrase parameter of type string.\nRequest content: "${JSON.stringify(event)}"`
         }
     }
-    let parsePhrase = decodeURI(requestData.phrase).trim();
+    let parsePhrase = decodeURIComponent(requestData.phrase).trim();
     if(!parsePhrase){
         return `Please provide a text string to be converted into a chord phrase.\nRequest content: "${JSON.stringify(event)}"`
     }
@@ -94,7 +94,7 @@ function stringToChordPhrase(inString){
         console.log("matchPhrase:", matchPhrase);
         let chordPhrase = chords.find(chord => chord.report.match(matchPhrase));
         console.log("chordPhrase:", JSON.stringify(chordPhrase));
-        phrase.push(`${chordChar.slice(0,5)}\t${chordPhrase.strokes}`);
+        phrase.push(`${chordChar.slice(0,5)}: ${chordPhrase.strokes}`);
     })
     return phrase.join('\n');
 }
