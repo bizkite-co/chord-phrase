@@ -23,7 +23,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: chord-phrase
-      Handler: src/handlers/phrase.getPhrase
+      Handler: src/handlers/phrase.phraseHandler
       Runtime: nodejs18.x
       Architectures:
         - x86_64

@@ -5,8 +5,8 @@
 codeuri = "D:\\T3\\Projects\\self\\Handex\\chord-phrase"
 runtime = "nodejs18.x"
 architecture = "x86_64"
-handler = "src/handlers/phrase.getPhrase"
-manifest_hash = "379e444ecceb7d4344b82edef08511b6"
+handler = "src/handlers/phrase.phraseHandler"
+manifest_hash = "c8b04c7541ce9914ff2e0e022eec99c0"
 packagetype = "Zip"
 functions = ["chordPhrase"]
 

@@ -26,8 +26,19 @@ Resources:
           - https://handex.io
           - http://localhost
       CodeUri: chordPhrase
+      Layers:
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.chordPhrase47900af3DepLayer
     Metadata:
       SamResourceId: chordPhrase
+  AwsSamAutoDependencyLayerNestedStack:
+    DeletionPolicy: Delete
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      TemplateURL: D:\T3\Projects\self\Handex\chord-phrase\.aws-sam\auto-dependency-layer\adl_nested_template.yaml
+    Type: AWS::CloudFormation::Stack
 Outputs:
   lambdaUrl:
     Description: URL for the Lambda function

@@ -11,7 +11,7 @@ require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 /**
  * A Lambda function that returns a static string
  */
-export const getPhrase = async (event) => {
+export const phraseHandler = async (event) => {
 
     // fs.readdir("/mnt/handex", function(err, items) {
     //     if(err){
@@ -27,16 +27,26 @@ export const getPhrase = async (event) => {
     console.log("EVENT:", event)
     let requestData = eventToRequestData(event);
     console.log("Request data:", requestData);
-    let parsePhrase = requestData.phrase.toString().replaceAll("%20", " ");
+    if(!requestData.phrase) {
+        return {
+            statusCode: 404,
+            body: `Please provide a phrase parameter of type string.\nRequest content: "${JSON.stringify(event)}"`,
+            message: `Please provide a phrase parameter of type string.\nRequest content: "${JSON.stringify(event)}"`
+        }
+    }
+    let parsePhrase = decodeURIComponent(requestData.phrase).trim();
     if(!parsePhrase){
         return `Please provide a text string to be converted into a chord phrase.\nRequest content: "${JSON.stringify(event)}"`
     }
     console.log(`Running handler on string: "${JSON.stringify(parsePhrase)}"`);
     // event.status = ["Adding results"];
     const resultPhrase = stringToChordPhrase(parsePhrase);
+    const body = requestData.ascii === "true" 
+        ? JSON.stringify(`t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${parsePhrase}\n\n${resultPhrase}`) 
+        : JSON.stringify(resultPhrase.replace(/\n/g, "<br>"));
     const response = {
         statusCode: 200,
-        body: `t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${parsePhrase}\n\n${resultPhrase}`,
+        body: body,
         testMessage: "Hello from Lambda!"
     }
     // All log statements are written to CloudWatch
@@ -84,7 +94,7 @@ function stringToChordPhrase(inString){
         console.log("matchPhrase:", matchPhrase);
         let chordPhrase = chords.find(chord => chord.report.match(matchPhrase));
         console.log("chordPhrase:", JSON.stringify(chordPhrase));
-        phrase.push(`${chordChar.slice(0,5)}\t${chordPhrase.strokes}`);
+        phrase.push(`${chordChar.slice(0,5)}: ${chordPhrase.strokes}`);
     })
     return phrase.join('\n');
 }

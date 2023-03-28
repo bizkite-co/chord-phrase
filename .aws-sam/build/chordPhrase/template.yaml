@@ -23,13 +23,14 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: chord-phrase
-      Handler: src/handlers/phrase.getPhrase
+      Handler: src/handlers/phrase.phraseHandler
       Runtime: nodejs18.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
       Description: A Lambda function that returns a static string.
+
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole

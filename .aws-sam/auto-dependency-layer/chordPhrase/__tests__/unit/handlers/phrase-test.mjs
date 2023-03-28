@@ -1,8 +1,8 @@
 // Import helloFromLambdaHandler function from hello-from-lambda.mjs
-import { getPhrase } from '../../../src/handlers/phrase.mjs';
+import { phraseHandler } from '../../../src/handlers/phrase.mjs';
 
 // This includes all tests for helloFromLambdaHandler()
-describe('Test for getPhrase', function () {
+describe('Test for phraseHandler', function () {
     // This test invokes helloFromLambdaHandler() and compare the result 
     it('Verifies successful response', async () => {
         // Invoke helloFromLambdaHandler()
@@ -16,7 +16,7 @@ describe('Test for getPhrase', function () {
         }
 
 
-        const result = await getPhrase(data);
+        const result = await phraseHandler(data);
         /* 
             The expected result should match the return from your Lambda function.
             e.g. 
@@ -38,7 +38,7 @@ describe('Test for getPhrase', function () {
             },
             "rawQueryString": "Hello World!"
         }
-        const result = await getPhrase(data);
+        const result = await phraseHandler(data);
         console.log("Result:", result);
         const expectedResult = 'Hello from Lambda!';
 
