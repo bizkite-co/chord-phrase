@@ -30,7 +30,9 @@ Resources:
       MemorySize: 128
       Timeout: 100
       Description: A Lambda function that returns a static string.
-
+      CodeUri: 
+        Bucket: handex
+        Key: chord-phrase.zip
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
