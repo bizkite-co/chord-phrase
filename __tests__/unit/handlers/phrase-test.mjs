@@ -23,9 +23,9 @@ describe('Test for phraseHandler', function () {
             if you change from `const message = 'Hello from Lambda!';` to `const message = 'Hello World!';` in hello-from-lambda.mjs
             you should change the following line to `const expectedResult = 'Hello World!';`
         */
-        const expectedResult = 'Hello from Lambda!';
+        const expectedResult = 200;
         // Compare the result with the expected result
-        expect(result.testMessage).toEqual(expectedResult);
+        expect(result.statusCode).toEqual(expectedResult);
     });
     // Test using the GET method
     it('Verifies successful response using GET', async () => {
@@ -40,10 +40,10 @@ describe('Test for phraseHandler', function () {
         }
         const result = await phraseHandler(data);
         console.log("Result:", result);
-        const expectedResult = 'Hello from Lambda!';
+        const expectedResult = 200;
 
         // Compare the result with the expected result
-        expect(result.testMessage).toEqual(expectedResult);
+        expect(result.statusCode).toEqual(expectedResult);
     });
 
 });

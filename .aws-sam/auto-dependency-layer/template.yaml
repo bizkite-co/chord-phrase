@@ -15,8 +15,8 @@ Resources:
       Timeout: 100
       Description: A Lambda function that returns a static string.
       Policies:
-      - AWSLambdaBasicExecutionRole: {}
-      - AmazonS3ReadOnlyAccess:
+      - AWSLambdaBasicExecutionRole
+      - S3FullAccessPolicy:
           BucketName: handex
       FunctionUrlConfig:
         AuthType: NONE
