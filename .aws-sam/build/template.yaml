@@ -16,6 +16,8 @@ Resources:
       Description: A Lambda function that returns a static string.
       Policies:
       - AWSLambdaBasicExecutionRole
+      - AWSS3FullAccessPolicy:
+          BucketName: handex
       FunctionUrlConfig:
         AuthType: NONE
         Cors:

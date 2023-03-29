@@ -34,6 +34,8 @@ Resources:
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
+        - S3FullAccessPolicy:
+            BucketName: handex
       FunctionUrlConfig:
         AuthType: NONE
         Cors:

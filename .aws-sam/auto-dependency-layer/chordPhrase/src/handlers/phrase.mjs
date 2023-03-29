@@ -1,32 +1,37 @@
 import { createRequire } from 'module';
+import processResponse from './process-response.mjs';
 const require = createRequire(import.meta.url);
 
 const http = require('http');
 const fs = require('fs');
-const chords = require("./chords.json");
+const IS_CORS = true;
+// const chords = require("./chords.json");
 var params = {Bucket: 'handex', Key: '/'};
 // require('aws-sdk/lib/maintenance_mode_message').suppress = true;
 // this imports just the getObject operation from S3
-import { GetObjectCommand } from "@aws-sdk/client-s3"
-/**
- * A Lambda function that returns a static string
- */
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3"
+const client = new S3Client({region: 'us-east-1'});
+const command = new GetObjectCommand({
+  Bucket: "handex",
+  Key: "chords.json"
+});
+const response = await client.send(command);
+const chords = JSON.parse(await response.Body.transformToString());
+/*
+  Convert a string to a chord phrase
+*/
 export const phraseHandler = async (event) => {
     console.log("EVENT:", event)
     let requestData = eventToRequestData(event);
     console.log("Request data:", requestData);
     if(!requestData.phrase) {
-        return {
-            statusCode: 404,
-            body: `Please provide a phrase parameter of type string.\nRequest content: "${JSON.stringify(event)}"`,
-            message: `Please provide a phrase parameter of type string.\nRequest content: "${JSON.stringify(event)}"`
-        }
+      return processResponse(IS_CORS, `Please provide a phrase parameter of type string.\nRequest content: "${JSON.stringify(event)}"`, 400);
     }
     // base64 decode the phrase 
     let phraseDecoded = Buffer.from(requestData.phrase, "base64").toString().trim();
     console.log("\nphraseDecoded:", phraseDecoded);
     if(!phraseDecoded){
-        return `Please provide a text string to be converted into a chord phrase.\nRequest content: "${JSON.stringify(event)}"`
+      return processResponse(IS_CORS, `Please provide a text string to be converted into a chord phrase.\nRequest content: "${JSON.stringify(event)}"`, 400);
     }
     console.log(`\nRunning handler on string: "${JSON.stringify(phraseDecoded)}"`);
     // event.status = ["Adding results"];
@@ -35,15 +40,9 @@ export const phraseHandler = async (event) => {
     const body = requestData.ascii === "true" 
         ? JSON.stringify(`t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${phraseDecoded}\n\n${resultPhrase}`) 
         : JSON.stringify(resultPhrase.replace(/\n/g, "<br>"));
-    const response = {
-        statusCode: 200,
-        body: body,
-        testMessage: "Hello from Lambda!"
-    }
     // All log statements are written to CloudWatch
-    console.info(`\nRESPONSE: ${JSON.stringify(response)}`);
-    
-    return response;
+    console.info(`\nRESPONSE: ${JSON.stringify(body)}`);
+    return processResponse(IS_CORS, body, 200);
 }
 
 const eventToRequestData = event => {
