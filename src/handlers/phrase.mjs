@@ -38,8 +38,8 @@ export const phraseHandler = async (event) => {
     const resultPhrase = stringToChordPhrase(phraseDecoded);
     console.log(`\nresultPhrase: ${resultPhrase}`);
     const body = requestData.ascii === "true" 
-        ? JSON.stringify(`t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${phraseDecoded}\n\n${resultPhrase}`) 
-        : JSON.stringify(resultPhrase.replace(/\n/g, "<br>"));
+        ? `t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${phraseDecoded}\n\n${resultPhrase}` 
+        : resultPhrase.replace(/\n/g, "<br>");
     // All log statements are written to CloudWatch
     console.info(`\nRESPONSE: ${JSON.stringify(body)}`);
     return processResponse(IS_CORS, body, 200);
