@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: chord-phrase
+Description: Handex chord-phrase Lambda function
 Transform:
 - AWS::Serverless-2016-10-31
 Resources:
@@ -7,13 +7,14 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: chord-phrase
-      Handler: src/handlers/phrase.phraseHandler
+      Handler: handlers/phrase.phraseHandler
       Runtime: nodejs18.x
       Architectures:
       - x86_64
       MemorySize: 128
       Timeout: 100
       Description: A Lambda function that returns a static string.
+      CodeUri: chordPhrase
       Policies:
       - AWSLambdaBasicExecutionRole
       - S3FullAccessPolicy:
@@ -27,7 +28,6 @@ Resources:
           AllowOrigins:
           - https://handex.io
           - http://localhost
-      CodeUri: chordPhrase
       Layers:
       - Fn::GetAtt:
         - AwsSamAutoDependencyLayerNestedStack

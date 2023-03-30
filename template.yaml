@@ -5,7 +5,7 @@
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  chord-phrase
+  Handex chord-phrase Lambda function
 
 # Transform section specifies one or more macros that AWS CloudFormation uses to process your template
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
@@ -23,16 +23,15 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: chord-phrase
-      Handler: src/handlers/phrase.phraseHandler
+      Handler: handlers/phrase.phraseHandler
       Runtime: nodejs18.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
       Description: A Lambda function that returns a static string.
-      CodeUri: 
-        Bucket: handex
-        Key: chord-phrase.zip
+      CodeUri: src/
+      
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
