@@ -27,7 +27,7 @@ Resources:
           - GET
           AllowOrigins:
           - https://handex.io
-          - http://localhost
+          - http://localhost:1313
       Layers:
       - Fn::GetAtt:
         - AwsSamAutoDependencyLayerNestedStack

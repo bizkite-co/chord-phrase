@@ -31,7 +31,7 @@ Resources:
       Timeout: 100
       Description: A Lambda function that returns a static string.
       CodeUri: src/
-      
+
       Policies:
         # Give Lambda basic execution Permission to the helloFromLambda
         - AWSLambdaBasicExecutionRole
@@ -45,7 +45,7 @@ Resources:
           - GET
           AllowOrigins:
           - https://handex.io
-          - http://localhost
+          - http://localhost:1313
 Outputs:
   lambdaUrl:
     Description: URL for the Lambda function
