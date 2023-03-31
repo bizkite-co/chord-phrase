@@ -1,4 +1,22 @@
-# chord-phrase
+# The Handex chord-phrase AWS Lambda function
+
+This Lambda function accepts a phrase:string, such as a pangram, and then converts it into a sequence of Handex chords which will type out the phrase.
+
+It can be tested on your own Handex at [https://handex.io/phrases](https://handex.io/phrases)
+
+## Deployment Notes
+
+If you use `sam deploy --guided` before you use `sam pipeline init --bootstrap` the first command will create `confirm_changeset = true` in the `samconfig.toml`.
+
+Then, when you do run `sam pipeline init --bootstrap` it will respect `confirm_changeset = true` and put the CloudFormation stack into a `REVIEW_IN_PROGRESS` state and abort the GitHub action.
+
+I don't know what [iRoachie](https://github.com/iRoachie) is sorry about. He just saved me _hours_ of more frustration. Thank you, sir!
+
+![](2023-03-30-19-07-20.png)
+
+[Set --no-confirm-changeset when CI=true · Issue #2180 · aws/aws-sam-cli](https://github.com/aws/aws-sam-cli/issues/2180)
+
+## SAM Template Notes 
 
 This project contains source code and supporting files for a serverless application that you can deploy with the AWS Serverless Application Model (AWS SAM) command line interface (CLI). It includes the following files and folders:
 
