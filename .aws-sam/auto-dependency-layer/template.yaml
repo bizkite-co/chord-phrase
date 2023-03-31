@@ -15,6 +15,7 @@ Resources:
       Timeout: 100
       Description: A Lambda function that returns a static string.
       CodeUri: chordPhrase
+      AutoPublishAlias: dev
       Policies:
       - AWSLambdaBasicExecutionRole
       - S3FullAccessPolicy:
