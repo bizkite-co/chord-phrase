@@ -10,6 +10,8 @@ If you use `sam deploy --guided` before you use `sam pipeline init --bootstrap` 
 
 Then, when you do run `sam pipeline init --bootstrap` it will respect `confirm_changeset = true` and put the CloudFormation stack into a `REVIEW_IN_PROGRESS` state and abort the GitHub action.
 
+**FIX** the problem by setting `confirm_changeset = false` in the `samconfig.toml`.
+
 I don't know what [iRoachie](https://github.com/iRoachie) is sorry about. He just saved me _hours_ of more frustration. Thank you, sir!
 
 ![](2023-03-30-19-07-20.png)

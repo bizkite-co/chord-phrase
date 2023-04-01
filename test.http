@@ -1,11 +1,11 @@
-GET https://r2swydpx7syeiycnrnny67bxii0myurm.lambda-url.us-east-1.on.aws/
+GET https://l7c5uk7cutnfql5j4iunvx4fuq0yjfbs.lambda-url.us-east-1.on.aws/
 ?phrase=The quick brown fox jumps over the lazy dog
 &ascii=true
 
 
 ###
 
-POST https://r2swydpx7syeiycnrnny67bxii0myurm.lambda-url.us-east-1.on.aws/
+POST https://l7c5uk7cutnfql5j4iunvx4fuq0yjfbs.lambda-url.us-east-1.on.aws/
 Content-Type: application/json
 
 {
