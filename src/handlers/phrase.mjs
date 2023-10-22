@@ -99,7 +99,8 @@ function stringToChordPhrase(inString){
                 "json": {
                   "char": `${chordChar.slice(0,5).replace(/^\\/, "")}`, 
                   "report": chordPhrase.report, 
-                  "strokes": `${isShift ? "tmf, " : ""}${chordPhrase.strokes}`
+                  "strokes": `${isShift ? "tmf, " : ""}${chordPhrase.strokes}`,
+                  "chord": `${isShift ? "5" : ""}${chordPhrase.chord}`
                 }
               }
             );

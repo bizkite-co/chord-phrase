@@ -36,10 +36,10 @@ export const phraseHandler = async (event) => {
     console.log(`\nRunning handler on string: "${JSON.stringify(phraseDecoded)}"`);
     // event.status = ["Adding results"];
     const resultPhrase = stringToChordPhrase(phraseDecoded);
-    console.log(`\nresultPhrase: ${resultPhrase}`);
+    console.log(`\nresultPhrase: ${JSON.stringify(resultPhrase)}`);
     const body = requestData.ascii === "true" 
-        ? `t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${phraseDecoded}\n\n${resultPhrase}` 
-        : {"ascii": resultPhrase.replace(/\n/g, "<br>"), "json": resultPhrase};
+        ? `t = thumb\ni = index\nm = middle\nr = ring\np = pinky\n\nmf = metacarpo-flexion\npf = proximal-flexion\nme = metacarpo-extension\n\nphrase = ${phraseDecoded}\n\n${resultPhrase.map((phrase) => {return phrase.ascii;}).join("\n")}` 
+        : {"ascii": resultPhrase.map((phrase) => {return phrase.ascii;}).join("<br>"), "json": resultPhrase.map((phrase) => {return phrase.json;})};
     // All log statements are written to CloudWatch
     console.info(`\nRESPONSE: ${JSON.stringify(body)}`);
     return processResponse(IS_CORS, body, 200);
@@ -93,10 +93,20 @@ function stringToChordPhrase(inString){
             // If it's after the "and", add Shift to the strokes
             const isShift = chordPhrase.report.match(`and ${chordChar}`);
             // TODO: Replace the hard-coded "tmf" with the looked-up chord.
-            phrase.push(`${chordChar.slice(0,5).replace(/^\\/, "")}: ${isShift ? "tmf, " : ""}${chordPhrase.strokes}`);
+            phrase.push(
+              {
+                "ascii":`${chordChar.slice(0,5).replace(/^\\/, "")}: ${isShift ? "tmf, " : ""}${chordPhrase.strokes}`, 
+                "json": {
+                  "char": `${chordChar.slice(0,5).replace(/^\\/, "")}`, 
+                  "report": chordPhrase.report, 
+                  "strokes": `${isShift ? "tmf, " : ""}${chordPhrase.strokes}`,
+                  "chord": `${isShift ? "5" : ""}${chordPhrase.chord}`
+                }
+              }
+            );
         }
     })
-    return phrase.join('\n');
+    return phrase;
 }
 
 function getChords(){
